@@ -1,0 +1,466 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ice And Fire</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="ice_and_fire.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    function character(){
+      var text = document.getElementById("Text");
+      if(text.value=="")
+        {
+          alert("Give an input!!");
+          return;
+        }
+      var display=text.value;
+      fun(display);
+    }
+    function RelationName(id,display){
+      $.getJSON(display,function(data){
+      if(data=="")
+        returnname="NA";
+      else{
+        returnname = data.name;
+      }
+      document.getElementById(id).innerHTML=returnname;
+      return returnname;
+      });
+    }
+    function fun(display){
+      // var tableheader=1;
+      var t = document.getElementById('mainTable');
+      for(var i = t.rows.length-1; i>=0; i--)
+      {
+        t.deleteRow(i);
+      }
+      var replaced= display.split(' ').join('+');
+      var temp="https://www.anapioficeandfire.com/api/characters/?name="+replaced;
+      $.getJSON(temp,function(data){
+        if(data=="")
+          alert("No data found");
+        var id="spouse",fid="father",mid="mother";  var tab="";var temp="here1";
+        for(i=0;i<data.length;i++)
+        {
+          // console.log(i);
+          var newTable="";
+          newTable+="<tr><td >"+"Name"+"</td>";
+          newTable+="<td >"+data[i].name+"</td></tr>";
+
+          // newTable+="<tr><td style=\"width: 120px\">"+"URL"+"</td>";
+          // newTable+="<td style=\"width: 120px\">"+data[i].url+"</td></tr>";
+
+          newTable+="<tr><td >"+"Gender"+"</td>";
+          newTable+="<td >"+data[i].gender+"</td></tr>";
+
+          newTable+="<tr><td >"+"Culture"+"</td>";
+          newTable+="<td >"+data[i].culture+"</td></tr>";
+
+          newTable+="<tr><td >"+"Born"+"</td>";
+          newTable+="<td >"+data[i].born+"</td></tr>";
+
+          newTable+="<tr><td >"+"Died"+"</td>";
+          newTable+="<td >"+data[i].died+"</td></tr>";
+
+          newTable+="<tr><td >"+"Spouse"+"</td>";
+          id+="sname";
+          var spousename=RelationName(id,data[i].spouse);
+          if(spousename==undefined)
+            spousename="NA";
+          // console.log(spousename);
+          newTable+="<td id=\""+id+"\" >"+spousename+"</td></tr>";
+
+          newTable+="<tr><td >"+"Father"+"</td>";
+          fid+="sname";
+          var Fathername=RelationName(fid,data[i].father);
+          if(Fathername==undefined)
+            Fathername="NA";
+          newTable+="<td id=\""+fid+"\" >"+Fathername+"</td></tr>";
+
+          newTable+="<tr><td >"+"Mother"+"</td>";
+          mid+="sname";
+          var mothername=RelationName(mid,data[i].mother);
+          if(mothername==undefined)
+            mothername="NA";
+          newTable+="<td id=\""+mid+"\" >"+mothername+"</td></tr>";
+
+          newTable+="<tr><td >"+"House:"+"</td>";
+          for(j=0;j<data[i].allegiances.length;j++)
+          {
+            var namehere=RelationName(temp,data[i].allegiances[j]);
+            tab+="<tr id=\""+temp+"\">"+ namehere+"</tr>";
+            temp+="here";
+          }
+          // sleep(2);
+          console.log("here i am");
+          newTable+="<td id=\"house\">"+tab+"</td></tr>";
+
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+          $("#mainTable").append(newTable);
+         }
+      } );
+    }
+    function house(){
+      var text = document.getElementById("Text");
+      if(text.value=="")
+        {
+          alert("Give an input!!");
+          return;
+        }
+      var display=text.value;
+      funhouse(display);
+    }
+    function funhouse(display){
+      var t = document.getElementById('mainTable');
+      for(var i = t.rows.length-1; i>=0; i--)
+      {
+        t.deleteRow(i);
+      }
+      var replaced= display.split(' ').join('+');
+      var temp="https://www.anapioficeandfire.com/api/houses/?name="+replaced;
+      $.getJSON(temp,function(data){
+        if(data=="")
+          alert("No data found");
+        var id="spouse",fid="father",mid="mother";var tab="";var temp="here1"; var cid="cur";var hid="h";
+        for(i=0;i<data.length;i++)
+        {
+          // console.log(i);
+          var newTable="";
+
+          newTable+="<tr><td>"+"Name"+"</td>";
+          newTable+="<td >"+data[i].name+"</td></tr>";
+
+
+          // newTable+="<tr><td style=\"width: 120px\">"+"URL"+"</td>";
+          // newTable+="<td style=\"width: 120px\">"+data[i].url+"</td></tr>";
+
+          newTable+="<tr><td>"+"Region"+"</td>";
+          newTable+="<td>"+data[i].region+"</td></tr>";
+
+          newTable+="<tr><td >"+"Coat Of Arms"+"</td>";
+          newTable+="<td >"+data[i].coatOfArms+"</td></tr>";
+
+          newTable+="<tr><td >"+"Words"+"</td>";
+          newTable+="<td >"+data[i].words+"</td></tr>";
+
+          newTable+="<tr><td >"+"Current Lord"+"</td>";
+          cid+="cur";
+          var curname = RelationName(cid,data[i].currentLord);
+          if(curname==undefined)
+            curname="NA";
+          newTable+="<td id=\""+cid+"\">"+data[i].currentLord+"</td></tr>";
+
+          newTable+="<tr><td >"+"Heir"+"</td>";
+          hid+="abc";
+          var hname = RelationName(hid,data[i].heir);
+          if(hname==undefined)
+            hname="NA"
+          newTable+="<td id=\""+hid+"\">"+data[i].heir+"</td></tr>";
+
+          newTable+="<tr><td >"+"Over lord"+"</td>";
+          id+="sname";
+          var spousename=RelationName(id,data[i].overlord);
+          if(spousename==undefined)
+            spousename="NA";
+          // console.log(spousename);
+          newTable+="<td id=\""+id+"\" >"+spousename+"</td></tr>";
+
+          newTable+="<tr><td >"+"Founded"+"</td>";
+          newTable+="<td >"+data[i].founded+"</td></tr>";
+
+          newTable+="<tr><td >"+"Founder"+"</td>";
+          fid+="sname";
+          var Fathername=RelationName(fid,data[i].founder);
+          if(Fathername==undefined)
+            Fathername="NA";
+          newTable+="<td id=\""+fid+"\" >"+Fathername+"</td></tr>";
+
+          newTable+="<tr><td >"+"Died Out"+"</td>";
+          newTable+="<td >"+data[i].diedOut+"</td></tr>";
+
+          newTable+="<tr><td >"+"Sworn Members:<br>"+"</td>";
+
+          for(j=0;j<data[i].swornMembers.length;j++)
+          {
+            var namehere=RelationName(temp,data[i].swornMembers[j]);
+            tab+="<tr id=\""+temp+"\"><td>"+namehere+"</td></tr>";
+            temp+="here";
+          }
+          // console.log("here i am");
+          newTable+="<td id=\"house\" >"+tab+"</td></tr>";
+
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+
+          $("#mainTable").append(newTable);
+         }
+      } );
+    }
+    function funNumber(string){
+      var t = document.getElementById('mainTable');
+      for(var i = t.rows.length-1; i>=0; i--)
+      {
+        t.deleteRow(i);
+      }
+      // console.log(string);
+      $.getJSON(string,function(data){
+        if(data=="")
+          alert("No data found");
+        var id="spouse",fid="father",mid="mother";  var tab="";var temp="here1";
+        {
+          var newTable="";
+
+          newTable+="<tr><td >"+"Name"+"</td>";
+          newTable+="<td >"+data.name+"</td></tr>";
+
+          // newTable+="<tr><td style=\"width: 120px\">"+"URL"+"</td>";
+          // newTable+="<td style=\"width: 120px\">"+data.url+"</td></tr>";
+
+          newTable+="<tr><td >"+"Gender"+"</td>";
+          newTable+="<td >"+data.gender+"</td></tr>";
+
+          newTable+="<tr><td >"+"Culture"+"</td>";
+          newTable+="<td >"+data.culture+"</td></tr>";
+
+          newTable+="<tr><td >"+"Born"+"</td>";
+          newTable+="<td >"+data.born+"</td></tr>";
+
+          newTable+="<tr><td >"+"Died"+"</td>";
+          newTable+="<td >"+data.died+"</td></tr>";
+
+          newTable+="<tr><td >"+"Spouse"+"</td>";
+          id+="sname";
+          var spousename=RelationName(id,data.spouse);
+          if(spousename==undefined)
+            spousename="NA";
+          // console.log(spousename);
+          newTable+="<td id=\""+id+"\" >"+spousename+"</td></tr>";
+
+          newTable+="<tr><td >"+"Father"+"</td>";
+          fid+="sname";
+          var Fathername=RelationName(fid,data.father);
+          if(Fathername==undefined)
+            Fathername="NA";
+          newTable+="<td id=\""+fid+"\" >"+Fathername+"</td></tr>";
+
+          newTable+="<tr><td >"+"Mother"+"</td>";
+          mid+="sname";
+          var mothername=RelationName(mid,data.mother);
+          if(mothername==undefined)
+            mothername="NA";
+          newTable+="<td id=\""+mid+"\" >"+mothername+"</td></tr>";
+
+          newTable+="<tr><td >"+"House:"+"</td>";
+          for(j=0;j<data.allegiances.length;j++)
+          {
+            var namehere=RelationName(temp,data.allegiances[j]);
+            tab+="<tr id=\""+temp+"\">"+namehere+"</tr>";
+            temp+="here";
+          }
+          // console.log("here i am");
+          newTable+="<td id=\"house\" >"+tab+"</td></tr>";
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+
+          $("#mainTable").append(newTable);
+         }
+      } );
+    }
+    function randchar(){
+      fetch("https://www.anapioficeandfire.com/api/characters/").then(response=>{
+
+          var headerstring=response.headers.get('Link');
+          console.log(headerstring);
+          var [a, b, c] = headerstring.split(',');
+          console.log(c);
+          var [p, q, r, s]=c.split('=');
+          console.log(q);
+          var [s, f] = q.split("&");
+          console.log(s);
+          var integer = parseInt(s, 10);
+          console.log(integer);
+          var result = Math.floor(Math.random()*integer)+1;
+          console.log(result);
+          var string="https://www.anapioficeandfire.com/api/characters/"+result;
+          funNumber(string);
+      })
+    }
+    function funHouseNumber(string){
+      var t = document.getElementById('mainTable');
+      for(var i = t.rows.length-1; i>=0; i--)
+      {
+        t.deleteRow(i);
+      }
+      // console.log(string);
+      $.getJSON(string,function(data){
+        if(data=="")
+          alert("No data found");
+        var id="spouse",fid="father",mid="mother";  var tab="";var temp="here1";var cid="cur",hid="h";
+        {
+          var newTable="";
+
+          newTable+="<tr><td >"+"Name"+"</td>";
+          newTable+="<td >"+data.name+"</td></tr>";
+
+
+          // newTable+="<tr><td style=\"width: 120px\">"+"URL"+"</td>";
+          // newTable+="<td style=\"width: 120px\">"+data.url+"</td></tr>";
+
+          newTable+="<tr><td >"+"Region"+"</td>";
+          newTable+="<td >"+data.region+"</td></tr>";
+
+          newTable+="<tr><td >"+"Coat Of Arms"+"</td>";
+          newTable+="<td >"+data.coatOfArms+"</td></tr>";
+
+          newTable+="<tr><td >"+"Words"+"</td>";
+          newTable+="<td >"+data.words+"</td></tr>";
+
+          newTable+="<tr><td >"+"Current Lord"+"</td>";
+          cid+="cur";
+          var curname=RelationName(cid,data.currentLord);
+          if (curname==undefined)
+            curname="NA";
+          newTable+="<td id=\""+cid+"\">"+data.currentLord+"</td></tr>";
+
+          newTable+="<tr><td >"+"Heir"+"</td>";
+          hid+="h";
+          var hname = RelationName(hid,data.heir);
+          if(hname==undefined)
+            hname="NA"
+          newTable+="<td id=\""+hid+"\">"+data.heir+"</td></tr>";
+
+          newTable+="<tr><td >"+"Over lord"+"</td>";
+          id+="sname";
+          var spousename=RelationName(id,data.overlord);
+          if(spousename==undefined)
+            spousename="NA";
+          // console.log(spousename);
+          newTable+="<td id=\""+id+"\" >"+spousename+"</td></tr>";
+
+          newTable+="<tr><td >"+"Founded"+"</td>";
+          newTable+="<td >"+data.founded+"</td></tr>";
+
+          newTable+="<tr><td >"+"Founder"+"</td>";
+          fid+="sname";
+          var Fathername=RelationName(fid,data.founder);
+          if(Fathername==undefined)
+            Fathername="NA";
+          newTable+="<td id=\""+fid+"\" >"+Fathername+"</td></tr>";
+
+          newTable+="<tr><td >"+"Died Out"+"</td>";
+          newTable+="<td >"+data.diedOut+"</td></tr>";
+
+
+          newTable+="<tr><td >"+"Sworn Members:"+"</td>";
+
+          for(j=0;j<data.swornMembers.length;j++)
+          {
+            var namehere=RelationName(temp,data.swornMembers[j]);
+            tab+="<tr id=\""+temp+"\">"+namehere+"</tr>";
+            temp+="here";
+          }
+          // console.log("here i am");
+          newTable+="<td id=\"house\" >"+tab+"</td></tr>";
+
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+          newTable+="<tr><td colspan=\"2\">------------------------------------------------------------------------------------------------------------</td> </tr>";
+
+          $("#mainTable").append(newTable);
+         }
+      } );
+    }
+    function randhouse(){
+      fetch("https://www.anapioficeandfire.com/api/houses/").then(response=>{
+
+          var headerstring=response.headers.get('Link');
+          console.log(headerstring);
+          var [a, b, c] = headerstring.split(',');
+          console.log(c);
+          var [p, q, r, s]=c.split('=');
+          console.log(q);
+          var [s, f] = q.split("&");
+          console.log(s);
+          var integer = parseInt(s, 10);
+          console.log(integer);
+          var result = Math.floor(Math.random()*integer)+1;
+          console.log(result);
+          var string="https://www.anapioficeandfire.com/api/houses/"+result;
+          funHouseNumber(string);
+      })
+    }
+    function randcharfromgivenhouse(){
+      var text = document.getElementById("Text");
+      if(text.value=="")
+        {
+          alert("Give an input!!");
+          return;
+        }
+      var display=text.value;
+      var t = document.getElementById('mainTable');
+      for(var i = t.rows.length-1; i>=0; i--)
+      {
+        t.deleteRow(i);
+      }
+      var replaced= display.split(' ').join('+');
+      var temp="https://www.anapioficeandfire.com/api/houses/?name="+replaced;
+      $.getJSON(temp,function(data){
+      if(data=="")
+        alert("No data found");
+      for(i=0;i<data.length;i++)
+      {
+        // console.log(JSON.stringify(data[i].swornMembers));
+        var arr=[];var xyz=0;
+        for(j=0;j<data[i].swornMembers.length;j++)
+        {
+          var display = data[i].swornMembers[j];
+          arr.push(display);
+          xyz++;
+        }
+        // console.log(arr);
+        // console.log(xyz);
+        var result = Math.floor(Math.random()*xyz)+1;
+        var url = arr[result];
+        funNumber(url);
+       }
+    });}
+  </script>
+  <!-- <nav class="navbar navbar-default"> -->
+  <br>
+  <br>
+    <div class="container-fluid">
+      <!-- <div class="jumbotron" style="background-color:  #b2babb ;padding:10px;color: #202020 ;" > -->
+        <h2 style="font-family: verdena;color: #2c1b12;" align="center"><strong>A Song Of Ice And Fire</strong></h2>
+      <!-- </div> -->
+    </div>
+  <!-- </nav> -->
+</head>
+<body>
+  <div align="center">
+      <br>
+      <button id="Character" type="button" class="btn btn-info" style="background-color:  #2c1b12;border:none; color: white;" onclick="character();">Search by Character</button>
+
+      <button id="House" type="button"  class="btn btn-info" style="background-color:  #2c1b12  ;border:none; color: white;" onclick="house();">Search by House</button>
+
+      <button id="RandChar" type="button"  class="btn btn-info" style="background-color:  #2c1b12  ;border:none; color: white;" onclick="randchar()">Random Character</button>
+
+      <button id="RandHouse" type="button"  class="btn btn-info" style="background-color:  #2c1b12  ;border:none; color: white;" onclick="randhouse();">Random House</button>
+      <button id="RandCharFromGivenHouse" type="button"  class="btn btn-info" style="background-color:  #2c1b12  ;border:none; color: white;" onclick="randcharfromgivenhouse();">Find Character of a House</button>
+      <br>
+      <br>
+      <div>
+      <!-- <h3 style="font-family: verdena; color: white; text-shadow: 2px 2px black;"><strong></strong></h3> -->
+      <textarea placeholder="Enter Item to be Searched here:" rows="1" cols="35" frameborder="1"  id="Text" style="font-family: Arial; color: #808080;font-size:18px; background-color: white; "></textarea>
+      <br>
+      <br>
+
+    </div>
+    <div id="printhere" class="container" align="center" style="padding-left: 220px; padding-right: 100px;">
+      <table id='mainTable' align="center" class="table table-hover" style="color: white; font-size: 20px;">
+    </table>
+    </div>
+</div>
+</body>
+</html>

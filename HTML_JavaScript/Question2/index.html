@@ -1,0 +1,138 @@
+<html>
+<head>
+  <title>XKCD</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="xkcd.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    var num;
+    function comic(){
+      //alert("hi!!");
+      $.getJSON("http://xkcd.com/info.0.json",function(data){
+        var month = data.month;
+        num = data.num;
+        var img = data.img;
+        var year = data.year;
+        var heading = data.title;
+        document.getElementById('here').src=img;
+        document.getElementById('heading').innerHTML=heading;
+        document.getElementById('footer').innerHTML="Permanent Link to This Comic: HTTP://XKCD.COM/INFO.0.JSON";
+        var replaced= heading.split(' ').join('_');
+        document.getElementById('footer1').innerHTML="Image URL(FOR HOTLINKING/EMBEDDING): HTTPS://IMGS.XKCD.COM/COMICS/"+replaced+".PNG";
+      });
+    }
+    function first(){
+      $.getJSON("https://xkcd.com/"+1+"/info.0.json",function(data){
+        var month = data.month;
+        var num = data.num;
+        var img = data.img;
+        var year = data.year;
+        var heading = data.title;
+        document.getElementById('here').src=img;
+        document.getElementById('heading').innerHTML=heading;
+        // document.getElementById('footer').innerHTML="http://xkcd.com/"+1+"/info.0.json";
+        document.getElementById('footer').innerHTML="Permanent Link to This Comic: HTTP://XKCD.COM/"+1+"/";
+        var replaced= heading.split(' ').join('_');
+        document.getElementById('footer1').innerHTML="Image URL(FOR HOTLINKING/EMBEDDING): HTTPS://IMGS.XKCD.COM/COMICS/"+replaced+".PNG";
+      });
+    }
+    function previous(){
+      var x = num-1;
+      num =x;
+      $.getJSON("https://xkcd.com/"+x+"/info.0.json",function(data){
+        var month = data.month;
+        var num = data.num;
+        var img = data.img;
+        var year = data.year;
+        var heading = data.title;
+        document.getElementById('here').src=img;
+        document.getElementById('heading').innerHTML=heading;
+        // document.getElementById('footer').innerHTML="http://xkcd.com/"+x+"/info.0.json";
+        document.getElementById('footer').innerHTML="Permanent Link to This Comic: HTTP://XKCD.COM/"+x+"/";
+        var replaced= heading.split(' ').join('_');
+        document.getElementById('footer1').innerHTML="Image URL(FOR HOTLINKING/EMBEDDING): HTTPS://IMGS.XKCD.COM/COMICS/"+replaced+".PNG";
+      });
+    }
+    function next(){
+      var x = num+1;
+      num = x;
+      $.getJSON("https://xkcd.com/"+x+"/info.0.json",function(data){
+        var month = data.month;
+        var num = data.num;
+        var img = data.img;
+        var year = data.year;
+        var heading = data.title;
+        document.getElementById('here').src=img;
+        document.getElementById('heading').innerHTML=heading;
+        // document.getElementById('footer').innerHTML="http://xkcd.com/"+x+"/info.0.json";
+        document.getElementById('footer').innerHTML="Permanent Link to This Comic: HTTP://XKCD.COM/"+x+"/";
+        var replaced= heading.split(' ').join('_');
+        document.getElementById('footer1').innerHTML="Image URL(FOR HOTLINKING/EMBEDDING): HTTPS://IMGS.XKCD.COM/COMICS/"+replaced+".PNG";
+      });
+    }
+    function rand(){
+      var x = Math.floor(Math.random()*10);
+      num = x;
+      $.getJSON("https://xkcd.com/"+x+"/info.0.json",function(data){
+        var month = data.month;
+        var num = data.num;
+        var img = data.img;
+        var year = data.year;
+        var heading = data.title;
+        document.getElementById('here').src=img;
+        document.getElementById('heading').innerHTML=heading;
+        // document.getElementById('footer').innerHTML="http://xkcd.com/"+x+"/info.0.json";
+        document.getElementById('footer').innerHTML="Permanent Link to This Comic: HTTP://XKCD.COM/"+x+"/";
+        var replaced= heading.split(' ').join('_');
+        document.getElementById('footer1').innerHTML="Image URL(FOR HOTLINKING/EMBEDDING): HTTPS://IMGS.XKCD.COM/COMICS/"+replaced+".PNG";
+      });
+    }
+
+    function last(){
+      $.getJSON("https://xkcd.com/info.0.json",function(data){
+        var month = data.month;
+        var num = data.num;
+        var img = data.img;
+        var year = data.year;
+        var heading = data.title;
+        document.getElementById('here').src=img;
+        document.getElementById('heading').innerHTML=heading;
+        document.getElementById('footer').innerHTML="Permanent Link to This Comic: HTTP://XKCD.COM/INFO.0.JSON";
+        var replaced= heading.split(' ').join('_');
+        document.getElementById('footer1').innerHTML="Image URL(FOR HOTLINKING/EMBEDDING): HTTPS://IMGS.XKCD.COM/COMICS/"+replaced+".PNG";
+      });
+    }
+  </script>
+</head>
+<body onload="comic();">
+  <div >
+    <div align="center" id="heading" style="font-size: 18px;font-weight: bold;font: verdena;font-variant: small-caps; "></div>
+    <div align="center">
+      <button id="first" type="button" class="btn btn-primary" onclick="first();">|<</button>
+      <button id="Previous" type="button" class="btn btn-primary" onclick="previous();">Previous</button>
+      <button id="rand" type="button" class="btn btn-primary" onclick="rand()">Random</button>
+      <button id="next" type="button" class="btn btn-primary" onclick="next();">Next</button>
+      <button id="last" type="button" class="btn btn-primary" onclick="last();">>|</button>
+
+    </div>
+    <div>
+      <!-- <br> -->
+      <img id="here"/>
+      <!-- <br> -->
+    </div>
+    <!-- <br>
+    <br> -->
+    <div align="center">
+      <button id="first" type="button" class="btn btn-primary" onclick="first();">|<</button>
+      <button id="Previous" type="button" class="btn btn-primary" onclick="previous();">Previous</button>
+      <button id="rand" type="button" class="btn btn-primary" onclick="rand()">Random</button>
+      <button id="next" type="button" class="btn btn-primary" onclick="next();">Next</button>
+      <button id="last" type="button" class="btn btn-primary" onclick="last();">>|</button>
+    </div>
+    <div align="center" id="footer" style="font-size: 15px; font: verdena;font-variant: small-caps;"></div>
+    <div align="center" id="footer1" style="font-size: 15px; font: verdena;font-variant: small-caps;"></div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+body{
+  background-image: url("https://awoiaf.westeros.org/images/c/c5/Gates_large.jpg");
+  color: white;
+  background-size: cover;
+  background-attachment: fixed;
+  font-size: 15;
+}
+.tableTest{
+  background: white;
+  margin: 10px;
+}

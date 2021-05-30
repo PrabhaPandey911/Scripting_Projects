@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analog Clock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="clock.css" />
+</head>
+<body>
+  <div class="clock">
+    <div id="hrs"></div>
+    <div id="mins"></div>
+    <div id="sec"></div>
+    <div id="date" class="date"></div>
+    <div id="three" class="three"><p><h1><b>3</b></h1></p></div>
+    <div id="nine" class="nine"><p><h1><b>9</b></h1></p></div>
+    <div id="six" class="six"><p><h1><b>6</b></h1></p></div>
+    <div id="twelve" class="twelve"><p><h1><b>12</b></h1></p></div>
+    <div id="one" class="one"><p><h1><b>1</b></h1></p></div>
+    <div id="two" class="two"><p><h1><b>2</b></h1></p></div>
+    <div id="four" class="four"><p><h1><b>4</b></h1></p></div>
+    <div id="eleven" class="eleven"><p><h1><b>11</b></h1></p></div>
+    <div id="five" class="five"><p><h1><b>5</b></h1></p></div>
+    <div id="ten" class="ten"><p><h1><b>10</b></h1></p></div>
+    <div id="eight" class="eight"><p><h1><b>8</b></h1></p></div>
+    <div id="seven" class="seven"><p><h1><b>7</b></h1></p></div>
+    <div id="center" class="center"></div>
+  </div>
+  <script language="JavaScript" >
+function msg(){
+var today=  new Date()
+    h= 30*((today.getHours()%12) + today.getMinutes() /60);
+    m= 6*(today.getMinutes() + today.getSeconds()/60);
+    s= 6*(today.getSeconds());
+    document.getElementById('hrs').style.cssText = "-webkit-transform:rotate("+h+"deg);";
+    document.getElementById('mins').style.cssText = "-webkit-transform:rotate("+m+"deg);";
+    document.getElementById('sec').style.cssText = "-webkit-transform:rotate("+s+"deg);";
+    var year=today.getFullYear();
+    var month=today.getMonth()+1;
+    var day = today.getDate();
+    document.getElementById('date').innerHTML = day+"/"+month+"/"+year;
+    setTimeout(msg,1000);
+
+}
+window.onload=msg;
+</script>
+</html>

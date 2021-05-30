@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script language="JavaScript">
+    var click=0;
+      function showInput(){
+
+        if(click==0){
+          var text1 = document.getElementById('coding').value;
+          var op = document.getElementById('output');
+          op.contentWindow.document.open();
+          op.contentWindow.document.write(text1);
+          op.contentWindow.document.close();
+          click=1;
+        }
+
+      }
+      function show(){
+        if(click==1){
+          var text1 = document.getElementById('coding').value;
+          var op = document.getElementById('output');
+          op.contentWindow.document.open();
+          op.contentWindow.document.write(text1);
+          op.contentWindow.document.close();}
+      }
+      function clearOutput(){
+        var op = document.getElementById('output');
+      op.src="about:blank";
+      
+      }
+      function clearInput(){
+          document.getElementById('coding').value='';
+      }
+      function resizeIframe(obj)
+      {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+      }
+    </script>
+    <title>Try It Yourself</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <h3 align="center" style="font-family:verdana; color:#4A235A"><b>"Try It Yourself!" Editor</b></h3>
+    <br>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header" style="padding:10px 10px;" >
+          <button type="button" class="btn btn-primary" onclick="showInput();">Run Code</button>
+          <button type="button" class="btn btn-primary" onclick="clearInput();">Clear code area</button>
+          <button type="button" class="btn btn-primary" onclick="clearOutput();" style="margin-right: 100px">Clear output area</button>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid" style="height: 100%;background-color:gainsboro;">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+             <label for="coding"><h4 style="font-family:garamond; color: #4A235A"><strong>Write your code here:</strong></h4></label>
+             <textarea placeholder="code" class="form-control"  frameborder="0"  id="coding" style="font-family: Arial; color: #4A235A; height: 80vh; background-color: white" onkeypress="show();" ></textarea>
+
+              <br>
+          </div>
+
+       </div>
+        <div class="col-xs-6" >
+          <div class="form-group">
+            <label for="coding"><h4 style="font-family:garamond; color: #4A235A;"><strong>Here is the output:</strong></h4></label>
+            <br>
+              <iframe id="output" align="left" scrolling="auto" frameborder="1" width="100%" style="background-color:white; height:80vh"> </iframe>
+          </div>
+
+        </div>
+      </div>
+
+  </div>
+
+
+  </body>
+</html>

@@ -1,0 +1,10 @@
+ls
+cd
+pwd
+head (flag -n and without it)
+tail (flag -n and without it) 
+touch (for one and more than one files)
+tr (with -d flag and without it)
+grep (with and without quotes)
+sed (s and g)
+diff 

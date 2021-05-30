@@ -1,0 +1,1 @@
+sed -En '/^(.).*\1$/p' /usr/share/dict/words

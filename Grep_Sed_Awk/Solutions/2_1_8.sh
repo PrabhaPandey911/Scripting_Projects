@@ -1,0 +1,1 @@
+sed -En '/^[^[:upper:]]{5}$|^[^[:upper:]]{10}$/p' /usr/share/dict/words

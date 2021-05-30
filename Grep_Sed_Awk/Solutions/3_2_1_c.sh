@@ -1,0 +1,1 @@
+awk 'END{printf("%s %s %s\n",$1,$2,$NF);}' marks.txt

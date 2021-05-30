@@ -1,0 +1,1 @@
+sed -E 's/(^[^#{}].*)/\t\1/g' sample.txt

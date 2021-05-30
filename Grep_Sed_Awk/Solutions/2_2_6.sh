@@ -1,0 +1,1 @@
+sed -E 's/(.)(.*)(.)/\3\2\1/g' address-book.csv

@@ -1,0 +1,19 @@
+.heart {
+    width: 70px;
+    height: 65px;
+    position: absolute;
+    margin-top: 5px;
+    transform: translate(-60%, -60%);
+    background: url(http://imagizer.imageshack.com/img923/4545/XdJDuY.png) no-repeat;  
+    cursor: pointer;
+    
+  }
+  .heart-blast {
+    background-position: -2800px 0;
+    transition: background 1s steps(28);
+  }
+  
+  .glyphicon-cloud-download{
+    color:#d9534f;
+    font-size:30px!important;
+  }

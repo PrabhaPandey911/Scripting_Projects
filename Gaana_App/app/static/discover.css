@@ -1,0 +1,21 @@
+.box
+{
+    
+    border: 3px solid red;
+   
+    border-radius: 15px;
+    background: #9932CC;
+    height:80px;
+    text-align:center;
+    color:white;
+    width: 80px
+    vertical-align: middle;
+    line-height: 70px;
+    margin-top: 30px;
+    text-color: white;
+   
+    
+   }
+
+  
+  

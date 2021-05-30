@@ -1,0 +1,29 @@
+
+<link href="../static/songsall.css" rel="stylesheet" type="text/css">
+<script>
+$('a').click(function(e){
+    e.preventDefault();
+    // console.log("hi");
+    var url=$(this).attr('href');
+    // console.log(url);
+    $('#block_content').load(url);
+    // localStorage.setItem('display', $bar.html());
+
+  });
+</script>
+
+<div class="container songContainer">
+        <div class="imgContainer">
+         
+{% for x in var1 %}
+    <div class="imgFrame">
+        <a href="{{ url_for('songArtist',searched=x) }}"><img src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png" alt="" class="img">
+            <div class="imgExplanation">{{x}}</div>
+        </a>
+    </div>
+
+{% endfor %}
+
+
+</div>
+</div>

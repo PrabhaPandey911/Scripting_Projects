@@ -1,0 +1,259 @@
+<link rel="stylesheet" href="../static/styles.css">
+
+<script>
+
+  $("#browse_login").click(function(event) {
+  event.preventDefault();
+  var form = $('#browse-login-form')[0];
+  var data = new FormData(form);
+  var url=$(form).attr('action');
+
+  $.ajax({
+    type: "POST",
+     enctype: 'multipart/form-data',
+     url:url,
+     data: data,
+      processData: false,
+      contentType: false,
+      cache: false,
+      success: function (result) {
+              $('#block_content').html(result);
+              console.log(result)
+              // localStorage.setItem('display', $bar.html());
+              document.getElementById("login").style.display="none";
+              document.getElementById("signup").style.display="none";
+              document.getElementById("signout").style.display="block";
+              $('#login-modal_1').modal('hide');
+              $('body').removeClass('modal-open');
+              $('div.modal-backdrop').remove();
+              },
+     error: function (event) {
+              console.log("ERROR : ", event);
+    }
+  });
+});
+
+ $("#create_playlist").click(function(event) {
+  event.preventDefault();
+  var form = $('#create_playlist_form')[0];
+  var data = new FormData(form);
+  var url=$(form).attr('action');
+  // alert(url)
+  $.ajax({
+    type: "POST",
+     enctype: 'multipart/form-data',
+     url:url,
+     data: data,
+      processData: false,
+      contentType: false,
+      cache: false,
+      success: function (result) {
+              $('#block_content').html(result);
+              console.log(result)
+              // localStorage.setItem('display', $bar.html());
+              // document.getElementById("login").style.display="none";
+              // document.getElementById("signup").style.display="none";
+              // document.getElementById("signout").style.display="block";
+              $('#login-modal_1').modal('hide');
+              $('body').removeClass('modal-open');
+              $('div.modal-backdrop').remove();
+              },
+     error: function (event) {
+              console.log("ERROR : ", event);
+    }
+  });
+});
+
+function download(param){
+    sid=param.split("|")[0]
+    uid = param.split("|")[1]
+    if(uid==""){
+      $("#login-modal_1").modal({show: true}) 
+    }
+    else{
+      $.getJSON('/downloadSong/'+sid,
+                function(data) {
+              //do nothing
+              // alert(data)
+              if(data!="None")
+              window.open(data)
+            else{
+              alert("cannot download")
+            }
+            });
+    }
+  }
+
+
+// $(function() {
+  var flag=false
+    $(".heart").on("click", function() {
+      sid_uid=(this.id).split("|")
+      sid = sid_uid[0]
+      uid = sid_uid[1]
+      if(uid==""){
+        // alert("empty")
+        $("#login-modal_1").modal({show: true})
+        // alert("after") 
+      }
+      else{
+        $(this).toggleClass("heart-blast");
+      if(!flag){
+        $.getJSON('/addToFav/'+sid+'/'+uid,
+                function(data) {
+              //do nothing
+            });
+            flag=!flag
+      }
+      else{
+        $.getJSON('/removeFromFav/'+sid+'/'+uid,
+                function(data) {
+              //do nothing
+            });
+            flag=!flag
+      }
+      }
+    });
+  // });
+
+  function createPlaylist(){
+
+  }
+
+  function addToExistingPlaylist(pname,sid,uid){
+    document.getElementById("playlist-modal1").style.display="none";
+    $.getJSON('/addToExistingPlaylist/'+pname+'/'+sid+'/'+uid,
+                function(data){
+                  //do nothing
+                });
+  }
+
+function loadPlaylist(param){
+    sid=param.split("|")[0]
+    uid = param.split("|")[1]
+    if(uid==""){
+      $("#login-modal_1").modal({show: true}) 
+    }
+    else{
+    document.getElementById("playlist-modal1").style.display="block"
+    document.getElementById("list").value=""+sid
+    // document.getElementById("playlist-modal").style.display="block"
+  $.getJSON('/viewPlaylist',
+                function(data) {
+                  console.log("here")
+                    var plname
+                    var table = document.getElementById("show-playlist");
+                    for(var il = table.rows.length - 1; il >= 0; il--)
+                    {
+                      table.deleteRow(il);
+                    }
+                    for(var i=0;i<data.length; i++){
+                        for(var j=0;j<data[i].length;j++){
+                            console.log(data[i][j])
+                            if(j==0){
+                            $("#show-playlist").append("<tr><td><a id='"+data[i][j]+"' href='#' onclick='addToExistingPlaylist(this.id,sid,uid)'><b>"+data[i][j]+"</b></a></td></tr>")
+                                plname=data[i][j]
+                            }
+                            else{
+                                break;
+                            }
+
+                        }
+                    }
+              //do nothing
+            });
+      }
+          
+}
+
+
+function mclose(){
+  document.getElementById("playlist-modal1").style.display="none";
+}
+
+ function hideModal(){
+    document.getElementById("playlist-modal1").style.display="none";
+  }
+
+  function playonesong(param){
+    var link=$("#"+param).data('spath')
+    var name=$("#"+param).data('sname')
+    var cover=$("#"+param).data('sthumb')
+    $('#bottom-nav').css("display","block");
+    $('#audio-player').attr("src",link);
+    $('#audio-player').attr("preload",'true');
+    $('#audio-player').attr("autoplay",'true');
+    $('#song-name-preview').text(name);
+    $('.cover').attr('src',cover);
+    $('.cover').attr('width','110');
+    $('.cover').attr('height','114');
+    $('.mejs-horizontal-volume-current').css('width','80px');
+    $('.mejs-horizontal-volume-handle').css('left','74px');
+    $('.mejs-time-rail').css("width","");
+    $('.mejs-time-total').css("width","");
+    audio=document.getElementById("audio-player")
+    audio.play()
+  }
+
+
+</script>
+
+
+  <div id="thanku,next" class="container" >
+    <br>
+      {%  if 'userid' in session%}
+       <b><h3> {% print 'Welcome ',session['uname'],'!' %}</h3></b>
+       {% endif %}
+       <div style="height: 110%" class="container">
+       <table class="table table-hover">
+       {% for i in songs %}
+       <tr>
+         {% set l=i.path %}
+          <td><span style="cursor:pointer;" id="{{i.sid}}" data-spath={{i.path}} data-sname={{i.sname}} data-sthumb={{i.thumbnail}} onclick="playonesong(this.id)">{{ i.sname }}</span></td>
+          <td><span id="{{ i.sid }}|{{ session['userid'] }}" class='heart'></span></td>
+          <td style="text-align: center"><a href="#plz" class="btn btn-danger add" id="{{ i.sid }}|{{ session['userid'] }}" data-toggle="modal" onclick="loadPlaylist(this.id)" >+</a></td>
+          <td><span style="cursor:pointer;" id="{{ i.sid }}|{{ session['userid'] }}" onclick="download(this.id)"class="download glyphicon glyphicon-cloud-download"></span></td>
+      </tr>
+<!-- class="add btn" data-toggle="modal" data-target="#playlist-modal1" -->
+<!--  -->
+       {% endfor %}
+       
+    </table>
+</div>
+    <br>
+    </div>
+<!-- Test modal -->
+    <div class="modal" id="playlist-modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal-dialog">
+      <div class="loginmodal-container">
+        <!-- <h1>Login to Your Account</h1><br> -->
+        <button type="button" class="close" data-dismiss="playlist-modal1" aria-hidden="true" onclick="mclose()">&times;</button>
+        <table class="table table-hover" id="show-playlist"></table>
+        <form  action="/createPlaylist" method="post" id="create_playlist_form">
+        <input type="text" name="pname" id="pname" placeholder="Create new playlist" required>
+        <input type="text" id="list" name="list" style="display: none">
+        <!-- <input type="button" class="login loginmodal-submit" value="Close" onclick="mclose()"> -->
+        <input type="submit" id="create_playlist" name="login" class="login loginmodal-submit" value="Create">
+        </form>
+      </div>
+    </div>
+    </div>
+    <!-- Test modal ends -->
+    <!-- login -->
+<div class="modal" id="login-modal_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+  <div class="loginmodal-container">
+    <h1>Login to Your Account</h1><br>
+    <form  action="/loginBrowse" method="post" id="browse-login-form">
+    <input type="text" name="emailid" id="emailid" placeholder="Email" required>
+    <input type="password" placeholder="Password" name="loginpassword"  id="loginPassword" required>
+    <input type="submit" id="browse_login" name="login" class="login loginmodal-submit" value="Login">
+    </form>
+
+    <div class="login-help">
+    <a href="#" data-toggle="modal" data-target="#register-modal" data-dismiss="modal">Register</a>
+    </div>
+  </div>
+</div>
+</div>
+<!--end login-->

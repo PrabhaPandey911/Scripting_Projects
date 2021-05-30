@@ -1,0 +1,43 @@
+
+ <!-- <head> -->
+<!-- <link rel="stylesheet" type="text/css" href="../../static/discover.css"> -->
+ <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<!-- </head>  -->
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script> -->
+<script>
+
+ $('a').click(function(e){
+        e.preventDefault();
+        // console.log("hi");
+        var url=$(this).attr('href');
+        console.log(url);
+        $('#block_content').load(url);
+        console.log('saved')
+
+      });
+    
+
+
+</script>
+
+
+
+
+<div class="container" style="height:120%">
+
+{% for r in result %}
+    
+<div class="box col-md-3">  
+    <div class="imgFrame">
+        <a href="{{ url_for('discoverplay',cat_id=r.cat_id) }}">
+            <img src={{r.cat_thumbnail}} alt={{r.cat_name}} class="img" style="height: 140px">
+          <div class="imgExplanation">{{ r.cat_name }}</div>
+        </a>
+    </div>
+</div>
+<!-- <div class="col-md-1 "></div> -->
+	
+  {% endfor %}
+</div>
+
+

@@ -1,0 +1,19 @@
+
+<link href="../static/songsall.css" rel="stylesheet" type="text/css">
+<script src="../static/songplay.js"></script>
+
+
+<div class="container songContainer">
+        <div class="imgContainer">
+         
+{% for x in var1 %}
+    <div class="imgFrame">
+        <img name="songs" data-sid={{var2}} data-song_id={{x.sid}} data-link={{x.path}} data-image={{x.thumbnail}} data-name={{x.sname}} src={{x.thumbnail}} alt="" class="img">
+        <div class="imgExplanation">{{x.sname}}</div>
+    </div>
+
+{% endfor %}
+
+
+</div>
+</div>

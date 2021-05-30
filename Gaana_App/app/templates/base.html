@@ -1,0 +1,180 @@
+<html>
+  <head>
+  
+    <title>Gaana</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="../static/navbar.css" rel="stylesheet" type="text/css">
+    <link href="../static/login.css" rel="stylesheet" type="text/css">
+    <link href="../static/search.css" rel="stylesheet" type="text/css">
+<link href="../static/songsall.css" rel="stylesheet" type="text/css">
+<link href="../static/style.css" rel="stylesheet" type="text/css">
+<script src="../static/base.js"></script>
+<style type="text/css">
+  @media only screen and (max-width: 750px) {
+      .searchBox{
+            width:261px;
+            left: 18%;
+      }
+  }
+</style>
+  </head>
+  <body >
+  <!--Navbar-->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container" style="width:970px;">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" style="position:absolute; right:0;">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/home">
+          <img src='https://www.virtualdj.com/images/social/icon.png' style="height:42 ;width:42;margin-top: -11px;"/>
+        </a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a class='anchor' href="/home">Home</a></li>
+          <li><a class='anchor'href="/browse">Browse</a></li>
+          <li><a class='anchor'href="{{ url_for('discover') }}" id='discover' >Discover</a></li>
+          <li><a class='anchor'href="{{url_for('radio')}}" id="my">Radio</a></li>
+          <!-- <li><a class='anchor'href="#">My Music</a></li> -->
+          {% if 'userid' in session %}
+          <li><a class='anchor'href="{{ url_for('loginNext') }}">My Profile</a></li>
+          {% else %}
+          
+          <li><a style="cursor:pointer" data-toggle="modal" data-target="#login-modal">My Profile</a></li>
+          {% endif %}
+          <li>
+            <!-- <a id='search' href="#search"> -->
+              <form id='search_form' action='/search' method="POST" enctype="multipart/form-data">
+
+            <div class="searchBox">
+                <input class="searchInput"type="text" name="searchInput" placeholder="Search">
+                <button id= 'search_button' class="searchButton" href="#" >
+                    <i class="glyphicon glyphicon-search">
+                        
+                    </i>
+                </button>
+            </div>
+          </form>
+        </li>
+       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- <li><a href="../navbar/">Default</a></li> -->
+          <!-- <li><a href="../navbar-static-top/">Static top</a></li> -->
+          <li id="login"  ><a style="cursor: pointer"data-toggle="modal" data-target="#login-modal">Sign In <span class="sr-only">(current)</span></a></li>
+          <li id="signup"><a style="cursor: pointer"data-toggle="modal" data-target="#register-modal">Sign Up <span class="sr-only">(current)</span></a></li>
+          <li id="signout"><a href="/logout">Sign Out <span class="sr-only">(current)</span></a></li>
+          {%  if 'userid' in session%}
+          <script> 
+          document.getElementById("login").style.display="none"
+          document.getElementById("signup").style.display="none"
+          document.getElementById("signout").style.display="block"
+          </script>
+          {% else %}
+          <script>
+            document.getElementById("login").style.display="block"
+            document.getElementById("signup").style.display="block"
+            document.getElementById("signout").style.display="none"
+          </script>
+          {% endif %}
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <!--End navbar-->
+    <hr>
+    <!-- {% block content %}{% endblock %} -->
+    <div id='block_content'></div>
+
+    <!--media player-->
+<div class="container" style="overflow-y: scroll; margin-top:20%">
+    <div id='bottom-nav' >
+      <!-- Audio Player CSS & Scripts -->
+      	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
+      	<script src="../static/js/mediaelement-and-player.min.js"></script>
+      	<link rel="stylesheet" href="../static/audio.css" media="screen">
+      	<!-- end Audio Player CSS & Scripts -->
+
+      	<!-- <style type="text/css">
+      		html, body { margin: 0;	padding: 0; }
+      		/*body { padding: 260px; background: #f2f2f2 url(img/bg.png) no-repeat top center; }*/
+      		.audio-player { margin: 0 auto;}
+      	</style> -->
+
+      	<!-- Audio Player HTML -->
+      	<div class="audio-player">
+      		<h1 id="song-name-preview">Demo - Preview Song</h1>
+          <img class="cover" src="../static/img/cover.png" alt="">
+          <button id="prev"><<</button>
+          <button id="next">>></button>
+      		<audio id="audio-player" src="../static/media/demo.mp3" type="audio/mp3" controls="controls"></audio>
+      	</div>
+
+      	<script>
+      		$(document).ready(function() {
+      			$('#audio-player').mediaelementplayer({
+      				alwaysShowControls: true,
+      				features: ['playpause','volume','progress'],
+      				audioVolume: 'horizontal',
+      				audioWidth: 100,
+      				audioHeight: 120
+      			});
+      		});
+      	</script>
+      	<!-- end Audio Player HTML -->
+        <!--end media player-->
+      </div>
+    </div>
+
+<!--login-->
+<div class="modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    	  <div class="modal-dialog">
+				<div class="loginmodal-container">
+					<h1>Login to Your Account</h1><br>
+				  <form  action="/loginNext" method="post" id="form1">
+					<input type="text" name="emailid" id="emailid" placeholder="Email" required>
+					<input type="password" placeholder="Password" name="loginpassword"  id="loginPassword" required>
+					<input type="submit" id="login-nav" name="login" class="login loginmodal-submit" value="Login">
+				  </form>
+
+				  <div class="login-help">
+					<a href="#" data-toggle="modal" data-target="#register-modal" data-dismiss="modal">Register</a>
+				  </div>
+				</div>
+			</div>
+		  </div>
+<!--end login-->
+
+<!--signup-->
+<div class="modal " id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    	  <div class="modal-dialog">
+				<div class="loginmodal-container">
+					<h1>Register</h1><br>
+				  <form  action="/registerNext" method="post" id="form2">
+            <input type="text" placeholder="Name"name="name" id="name" required>
+            <input type="text" name="emailid" id="emailid" placeholder="Email" required>
+            <input type="text"id="phone" name="phone" placeholder="Phone Number" required>
+          <input type="password" placeholder="Password"  name="loginpassword" id="loginPassword" required>
+					<input type="password" placeholder="Confirm Password"  name="loginpassword2" id="loginPassword2" required>
+					<input type="submit" name="login" class="login loginmodal-submit" value="Login"  onclick="validate()">
+				  </form>
+
+
+				</div>
+			</div>
+		  </div>
+<!--end signup-->
+  </body>
+</html>
+
+<!-- block control statement is used to define the place where the derived templates can insert themselves
+
+Blocks are given a unique name and content can enhanced/replaced in derived templates
+ -->

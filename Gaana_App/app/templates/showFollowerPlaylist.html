@@ -1,0 +1,82 @@
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+<script src="../static/base.js"></script>
+      	<link rel="stylesheet" href="../static/audio.css" media="screen">
+
+<div class="container">
+<div style="padding-left: 50px; padding-top: 50px;" >
+<div class='imgFrame' style=" box-shadow: 0 4px 8px 0 rgba(0,0,0, 0.2); max-width: 100px;  ">
+	{% for i in var1 %}
+
+		<img src='https://www.alzforum.org/sites/default/files/member-default.jpg' alt='' class='img'style="width: 100px; height: 100px; position: relative;">
+		<div class='imgExplanation' style="text-align: center">{{ i.uname }}</div>
+	
+	{% endfor %}
+
+</div>
+<script>
+	function userPlaylist(){
+		link=$("#user-playlist-item").data("spath")
+		cover=$("#user-playlist-item").data("thumb")
+		name=$("#user-playlist-item").data("sname")
+		$('#bottom-nav').css("display","block");
+        $('#audio-player').attr("src",link);
+	    $('#audio-player').attr("preload",'true');
+	    $('#audio-player').attr("autoplay",'true');
+	    $('#song-name-preview').text(name);
+	    $('.cover').attr('src',cover);
+	    $('.cover').attr('width','110');
+	    $('.cover').attr('height','114');
+	    $('.mejs-horizontal-volume-current').css('width','80px');
+	    $('.mejs-horizontal-volume-handle').css('left','74px');
+	}
+</script>
+
+{% for i in playlist %}
+	
+	<a id="user-playlist-item" data-spath={{i.path}} data-sname={{i.sname}} data-thumb={{i.thumbnail}} onclick="userPlaylist(i)">
+		{{i.sname}}
+	</a>
+	<br>
+	
+{% endfor %}
+</div>
+</div>
+
+<div class="container">
+    <div id='bottom-nav' >
+      <!-- Audio Player CSS & Scripts -->
+      	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
+      	<script src="../static/js/mediaelement-and-player.min.js"></script>
+      	<link rel="stylesheet" href="../static/audio.css" media="screen">
+      	<!-- end Audio Player CSS & Scripts -->
+
+      	<!-- <style type="text/css">
+      		html, body { margin: 0;	padding: 0; }
+      		/*body { padding: 260px; background: #f2f2f2 url(img/bg.png) no-repeat top center; }*/
+      		.audio-player { margin: 0 auto;}
+      	</style> -->
+
+      	<!-- Audio Player HTML -->
+      	<div class="audio-player">
+      		<h1 id="song-name-preview">Demo - Preview Song</h1>
+          <img class="cover" src="../static/img/cover.png" alt="">
+          <button id="prev"><<</button>
+          <button id="next">>></button>
+      		<audio id="audio-player" src="../static/media/demo.mp3" type="audio/mp3" controls="controls"></audio>
+      	</div>
+
+      	<script>
+      		$(document).ready(function() {
+      			$('#audio-player').mediaelementplayer({
+      				alwaysShowControls: true,
+      				features: ['playpause','volume','progress'],
+      				audioVolume: 'horizontal',
+      				audioWidth: 100,
+      				audioHeight: 120
+      			});
+      		});
+      	</script>
+      	<!-- end Audio Player HTML -->
+        <!--end media player-->
+      </div>
+    </div>

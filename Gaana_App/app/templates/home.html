@@ -1,0 +1,134 @@
+<link href="../static/songsall.css" rel="stylesheet" type="text/css">
+<link href="../static/search.css" rel="stylesheet" type="text/css">
+<script src="../static/songplay.js"></script>
+
+   
+<div class="container">
+
+<!-- recently played start -->
+{% if var1|length>0 %}
+<div class="container">
+    <div col="col-md-6">
+        <h3 style="float:left">Recently Played</h3>
+    </div>
+{% if var1|length> 4 %}
+    <div col="col-md-6">
+        <h5 style="float:right;top: 43px;position: relative;"><a id='view_all' href="{{ url_for('recent') }}">View All</a></h5>
+    </div>
+</div>
+<div class="imgContainer">
+    {% for x in range(4) %}
+        <div class="imgFrame">
+            <img name="songs" data-sid={{song_recent}} data-id={{var1[x].sid}} data-link={{var1[x].path}} data-image={{var1[x].thumbnail}} data-name={{var1[x].sname}} src={{var1[x].thumbnail}} alt="" class="img">
+            <div class="imgExplanation">{{var1[x].sname}}</div>
+        </div>
+
+    
+    {% endfor %}
+</div>
+{% else %}
+    </div>
+<div class="imgContainer">
+
+    {% for x in var1 %}
+        <div class="imgFrame">
+            <img name="songs" data-sid={{song_recent}} data-id={{x.sid}} data-link={{x.path}} data-image={{x.thumbnail}} data-name={{x.sname}} src={{x.thumbnail}} alt="" class="img">
+            <div class="imgExplanation">{{x.sname}}</div>
+        </div>
+
+    {% endfor %}
+    
+    </div>
+    {% endif %}
+
+<div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+
+{% endif %}
+    <!-- recently played end-->
+
+<!-- Trending start -->
+{% if var2|length>0 %}
+<div class="container">
+    <div col="col-md-6">
+        <h3 style="float:left">Trending</h3>
+    </div>
+{% if var2|length> 4 %}
+    <div col="col-md-6">
+        <h5 style="float:right;top: 43px;position: relative;"><a id='view_all' href="{{ url_for('trend') }}">View All</a></h5>
+    </div>
+</div>
+<div class="imgContainer">
+    {% for x in range(4) %}
+        <div class="imgFrame">
+            <img name="songs" data-sid={{song_trend}} data-id={{var2[x].sid}} data-link={{var2[x].path}} data-image={{var2[x].thumbnail}} data-name={{var2[x].sname}} src={{var2[x].thumbnail}} alt="" class="img">
+            <div class="imgExplanation">{{var2[x].sname}}</div>
+        </div>
+
+    
+    {% endfor %}
+</div>
+{% else %}
+    </div>
+<div class="imgContainer">
+
+    {% for x in var2 %}
+        <div class="imgFrame">
+            <img name="songs" data-sid={{song_trend}} data-id={{x.sid}} data-link={{x.path}} data-image={{x.thumbnail}} data-name={{x.sname}} src={{x.thumbnail}} alt="" class="img">
+            <div class="imgExplanation">{{x.sname}}</div>
+        </div>
+
+    {% endfor %}
+    
+    </div>
+    {% endif %}
+
+<div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+
+{% endif %}
+<!-- Tresnding end -->
+
+
+
+<!-- Artist start -->
+{% if var3|length>0 %}
+<div class="container">
+    <div col="col-md-6">
+        <h3 style="float:left">Artist</h3>
+    </div>
+{% if var3|length> 4 %}
+    <div col="col-md-6">
+        <h5 style="float:right;top: 43px;position: relative;"><a id='view_all' href="{{ url_for('artistAllHome') }}">View All</a></h5>
+    </div>
+</div>
+<div class="imgContainer">
+    {% for x in range(4) %}
+        <div class="imgFrame">
+            <a href="{{ url_for('songArtist',searched=var3[x]) }}">
+            <img src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png" alt="" class="img"></a>
+            <div class="imgExplanation">{{var3[x]}}</div>
+        </div>
+
+    
+    {% endfor %}
+</div>
+{% else %}
+    </div>
+<div class="imgContainer">
+
+    {% for x in var3 %}
+        <div class="imgFrame">
+             <a href="{{ url_for('songArtist',searched=x) }}">
+            <img src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png"alt="" class="img"></a>
+            <div class="imgExplanation">{{x}}</div>
+        </div>
+
+    {% endfor %}
+    
+    </div>
+    {% endif %}
+
+<div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+
+{% endif %}
+<!-- Artist end -->
+</div>

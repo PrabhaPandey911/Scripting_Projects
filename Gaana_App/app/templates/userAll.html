@@ -1,0 +1,18 @@
+
+<link href="../static/songsall.css" rel="stylesheet" type="text/css">
+
+<div class="container songContainer">
+        <div class="imgContainer">
+         
+{% for x in var1 %}
+    <div class="imgFrame">
+        <a href="{{ url_for('userProfile',searched=x) }}"><img src="https://www.alzforum.org/sites/default/files/member-default.jpg" alt="" class="img">
+            <div class="imgExplanation">{{x.uname}}</div>
+        </a>
+    </div>
+
+{% endfor %}
+
+
+</div>
+</div>

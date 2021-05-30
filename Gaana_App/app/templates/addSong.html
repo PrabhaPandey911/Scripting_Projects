@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Song Form</title>
+    <script>
+        function fun(){
+        var absolutePath=document.getElementById('browse').value;
+        var myObject, f;
+        console.log(absolutePath);
+        }
+    </script>
+</head>
+<body>
+<form action="/background_process" method="POST" id="form" enctype="multipart/form-data">
+    <input placeholder="Song Name"type="text" id="sname" name="sname">
+    
+    
+     
+     <select onchange="func();"placeholder="Songs Category" id="category" name="category">
+        <option value=""  selected>Select Category</option>
+        {% for cres in cresult %}
+    <option value={{ cres.cat_name }}>{{ cres.cat_name }}</option>
+    {% endfor %}
+   
+  </select>
+  <br>
+  <br>
+     <select placeholder="genre" id="genre" name="genre">
+
+
+     
+    
+  </select>
+  <br>
+  <br>
+     <input placeholder="Artist" type="text" id="artist" name="artist">
+    <input placeholder="Album" type="text" id="album" name="album">
+    <input type="text" placeholder="YYYY"  id="year" name="year">
+     
+     <input placeholder="Select File" type="file" id="browse" name="browse" accept="*.mp3" >
+    <br>
+	 <input type="submit" class="login loginmodal-submit" value="Upload" id="test"> 
+</form>
+</body>
+</html>

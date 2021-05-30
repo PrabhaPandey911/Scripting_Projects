@@ -1,0 +1,138 @@
+{
+	
+    "category": [
+        {
+            "cat_id":1,
+            "cat_name": "Workout Songs",
+            "cat_thumbnail": "https://www.billboard.com/files/styles/article_main_image/public/media/workout-songs-billboard-650.jpg"
+        },
+        {
+            "cat_id":2,
+            "cat_name": "Party Songs",
+            "cat_thumbnail": "http://www.exhibit-tech.org/wp-content/uploads/2016/12/1-800x500_c.png"
+
+        },
+	{
+            "cat_id":3,
+            "cat_name": "Devotional Songs",
+            "cat_thumbnail": "https://a10.gaanacdn.com/images/occasion/home_page_recBhakti_1524724848.jpg"
+
+        },
+
+	{
+            "cat_id":4,
+            "cat_name": "Romantic Songs",
+            "cat_thumbnail": "http://ajirakhabar.com/wp-content/uploads/2018/08/Music-Video-3.jpg"
+
+        },
+	{
+            "cat_id":5,
+            "cat_name": "Festival Songs",
+            "cat_thumbnail": "https://www.songsforkids.org/assets/SFKImages/FoodFest2018_Logo_640.png"
+
+        },
+	{
+            "cat_id":6,
+            "cat_name": "Wedding Songs",
+            "cat_thumbnail": "https://www.cto.com/wp-content/uploads/2018/01/wedding-song.jpg"
+
+        },
+	{
+            "cat_id":7,
+            "cat_name": "Dance Songs",
+            "cat_thumbnail": "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Songanddance.jpg/300px-Songanddance.jpg"
+
+        },
+	{
+            "cat_id":8,
+            "cat_name": "90s and Early 2000 Songs",
+            "cat_thumbnail": "https://i.ebayimg.com/images/g/sWgAAOSwJRZaUzCD/s-l640.jpg"
+
+        }
+    ],
+     "Subcategory": [
+        {
+            "scat_id":101,
+            "scat_name": "Cardio Basics",
+		"cat_id":1
+        },
+        {
+            "scat_id":102,
+            "scat_name": "Sweat It Out",
+		"cat_id":1
+        },
+	 {
+            "scat_id":201,
+            "scat_name": "Retro Party",
+		"cat_id":2
+        },
+
+	 {
+            "scat_id":202,
+            "scat_name": "All Time Favourite",
+		"cat_id":2
+        },
+	 {
+            "scat_id":301,
+            "scat_name": "Bhajan",
+	   "cat_id":3
+        },
+	 {
+            "scat_id":302,
+            "scat_name": "Aarti",
+            "cat_id":3
+        },
+	 {
+            "scat_id":401,
+            "scat_name": "90s Romance",
+		"cat_id":4
+        },
+	 {
+            "scat_id":402,
+            "scat_name": "Love At First Sight",
+	   "cat_id":4
+        },
+	 {
+            "scat_id":501,
+            "scat_name": "Holi",
+	    "cat_id":5
+        },
+	 {
+            "scat_id":502,
+            "scat_name": "Diwali",
+	    "cat_id":5
+        },
+	 {
+            "scat_id":601,
+            "scat_name": "Sangeet",
+	    "cat_id":6
+        },
+	 {
+            "scat_id":602,
+            "scat_name": "Bachelor Party",
+             "cat_id":6
+        },
+	 {
+            "scat_id":701,
+            "scat_name": "Disco",
+	    "cat_id":7
+        },
+	 {
+            "scat_id":702,
+            "scat_name": "Salsa",
+             "cat_id":7
+        },
+	 {
+            "scat_id":801,
+            "scat_name": "Slow",
+	    "cat_id":8
+        },
+	 {
+            "scat_id":802,
+            "scat_name": "Fast",
+	    "cat_id":8
+        }
+
+    ]
+
+}

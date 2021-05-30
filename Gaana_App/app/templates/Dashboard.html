@@ -1,0 +1,493 @@
+<script>
+
+$(document).ready(function() {
+   
+   $('a[name=test_followers]').on('click',function(e){
+       e.preventDefault()
+    id=$(this).data('id');      
+ 
+    $.ajax({
+         type: "POST",
+         url: "/userProfileById/"+id,
+         // data: id,
+         success: function (result) {
+             console.log("success");
+         },
+         error: function (e) {
+             console.log("ERROR : ", e);
+         }
+               
+         });
+
+   });
+   $bar = $('#block_content');
+ 
+ 
+        $('a[name=userfollowing]').click(function(e){
+            // alert("post")
+         e.preventDefault();
+         // console.log("hi");
+         var url=$(this).attr('href');
+         // console.log(url);
+         $('#block_content').load(url);
+         // localStorage.setItem('display', $bar.html());
+ 
+       });
+     
+  });
+
+     $("#playlist-button-create").click(function(event) {
+  event.preventDefault();
+  $('#hidden-button').trigger('click')
+  var form = $('#playlist-create-form')[0];
+  var data = new FormData(form);
+  var url=$(form).attr('action');
+//   alert(url)
+  $.ajax({
+    type: "POST",
+     enctype: 'multipart/form-data',
+     url:url,
+     data: data,
+      processData: false,
+      contentType: false,
+      cache: false,
+      success: function (result) {
+              $('#block_content').html(result);
+              console.log(result)
+              // localStorage.setItem('display', $bar.html());
+            //   document.getElementById("login").style.display="none";
+            //   document.getElementById("signup").style.display="none";
+            //   document.getElementById("signout").style.display="block";
+            // //   $('#login-modal_1').modal('hide');
+            //   $('body').removeClass('modal-open');
+            //   $('div.modal-backdrop').remove();
+              },
+     error: function (event) {
+              console.log("ERROR : ", event);
+    }
+  });
+});
+
+
+
+   function func()
+    { 
+        var cat = $('#category').val();
+        $.getJSON(
+            '/get_subcat' + '/' + cat,
+            function(data) {
+               $('#genre').find('option').remove(); 
+              $.each(data, function(key, val) {
+                //   alert("key: "+key+" value: "+val)
+                var option_item = '<option value="' + val + '">' + val + '</option>'
+                $('#genre').append(option_item);
+              });
+            }
+          );
+    }
+
+function removeFromFav(param){
+    sid=param.split("|")[0]
+    uid=param.split("|")[1]
+    // document.getElementById("audio-player").autoplay=true;
+    $.getJSON('/removeFromFav/'+sid+'/'+uid,
+                function(data) {
+            });
+            viewFav(uid)
+}
+
+function playFav(param){
+    $.getJSON('songInfoFromSid/'+param,
+                function(data) {
+                    // alert(data)
+                    path=data[2]
+                    name=data[0]
+                    img=data[1]
+                    $('#bottom-nav').css("display","block");
+        $('#audio-player').attr("src",path);
+        $('#audio-player').attr("preload",'true');
+        $('#audio-player').attr("autoplay",'true');
+        $('#song-name-preview').text(name);
+        $('.cover').attr('src',img);
+        $('.cover').attr('width','110');
+        $('.cover').attr('height','114');
+        $('.mejs-horizontal-volume-current').css('width','80px');
+        $('.mejs-horizontal-volume-handle').css('left','74px');
+            });
+    // document.getElementById("audio-player").autoplay=true;
+    // document.getElementById("audio-player").src=param
+   
+}
+
+function viewFav(uid){
+    document.getElementById("create-playlist").style.display="none";
+        document.getElementById("add-modal").style.display="none";
+        document.getElementById("view-modal").style.display="none";
+        document.getElementById("view-fav").style.display="block";
+        document.getElementById("view-follower").style.display="none";
+        document.getElementById("view-following").style.display="none";
+        document.getElementById("my-music").style.display="none";
+    var table = document.getElementById("fav");
+            for(var il = table.rows.length - 1; il >= 0; il--)
+            {
+            table.deleteRow(il);
+            }
+            $.getJSON('/viewFavs',
+                function(data) {
+                    if(data=="Please Login"){
+                        $("#fav").append("<tr><td>Please Login!</td></tr>")
+                    }
+                    else{
+                        for(var i=0;i<data.length;i++){
+                            $("#fav").append("<tr><td><a id='"+data[i][0]+"' onclick='playFav(this.id)'>"+data[i][1]+"</a></td><td><a id='"+data[i][0]+"|"+uid+"' onclick='removeFromFav(this.id)'><span class='glyphicon glyphicon-trash'></span></a></td></tr>")
+                        }
+                    }
+            });
+        }
+
+function deletePlaylist(param){
+    // alert("deleting..")
+    pname=param.split("|")[0]
+    uid=param.split("|")[1]
+    $.getJSON('/deletePlaylist/'+uid+'/'+pname,
+    function(data) {
+        if(data=="success")
+        {
+            alert("Deleted Successfully")
+        }
+        else{
+            alert("Some Error occured. Try again!")
+        }
+    });
+    viewPlaylist(uid)
+}
+
+function viewUploadSong(){
+    $.getJSON('/cat_fetch',function(data) {
+        var i;
+        $('#category').html('');
+        for(i=0;i<data.length;i++){
+            var newOption = $('<option value="'+data[i][1]+'">'+data[i][1]+'</option>');
+            $('#category').append(newOption);
+        }
+        });
+        document.getElementById("create-playlist").style.display="none";
+        document.getElementById("add-modal").style.display="block";
+        document.getElementById("view-modal").style.display="none";
+        document.getElementById("view-fav").style.display="none";
+        document.getElementById("view-follower").style.display="none";
+        document.getElementById("view-following").style.display="none";
+        document.getElementById("my-music").style.display="none";
+    }
+
+    function viewCreatePlaylist(){
+        document.getElementById("create-playlist").style.display="block";
+        document.getElementById("add-modal").style.display="none";
+        document.getElementById("view-modal").style.display="none";
+        document.getElementById("view-fav").style.display="block";
+        document.getElementById("view-follower").style.display="none";
+        document.getElementById("view-following").style.display="none";
+        document.getElementById("my-music").style.display="none";
+    }
+    index=0
+    play=[]
+
+   async function display(param){
+        // console.log(param)
+        index=0
+        playlist_id=param
+        console.log("pid: "+playlist_id)
+        // document.getElementById("audio-player").autoplay=true;
+        // console.log(play)
+                oh=play[index].split("||")[0]
+                while(oh!=param && index<play.length){
+                    index++;
+                    oh=play[index].split("||")[0]
+                }
+                
+                if(oh==param){
+                uh=play[index].split("||")[1].split("|")
+                // alert(uh)
+                // alert(uh[4])
+                $.getJSON('/getSids/'+uh[4],
+                function(data) {
+                    indx=0
+                    array=data
+                });
+
+
+                $('#bottom-nav').css("display","block");
+                $('#audio-player').attr("src",uh[0]);
+                $('#audio-player').attr("preload",'true');
+                $('#audio-player').attr("autoplay",'true');
+                $('#song-name-preview').text(uh[3]);
+                $('.cover').attr('src',uh[2]);
+                $('.cover').attr('width','110');
+                $('.cover').attr('height','114');
+                $('.mejs-horizontal-volume-current').css('width','80px');
+                $('.mejs-horizontal-volume-handle').css('left','74px');
+        }
+    }
+
+function viewPlaylist(uid){
+        var table = document.getElementById("tab");
+        for(var il = table.rows.length - 1; il >= 0; il--)
+        {
+        table.deleteRow(il);
+        }
+        document.getElementById("create-playlist").style.display="none";
+        document.getElementById("add-modal").style.display="none";
+        document.getElementById("view-modal").style.display="block";
+        document.getElementById("view-fav").style.display="none";
+        document.getElementById("view-follower").style.display="none";
+        document.getElementById("view-following").style.display="none";
+        document.getElementById("my-music").style.display="none";
+
+            $.getJSON('/viewPlaylist',
+                function(data) {
+                    var plname
+                    for(var i=0;i<data.length; i++){
+                        for(var j=0;j<data[i].length;j++){
+                            if(j==0){
+                            $("#tab").append("<tr><td><a id='"+data[i][j]+"' href='#' onclick='display(this.id)'><b>"+data[i][j]+"</b></a></td><td><a href='#remove' id='"+data[i][j]+"|"+uid+"' onclick='deletePlaylist(this.id)'><span class='glyphicon glyphicon-trash'></span></a></td></tr>")
+                                plname=data[i][j]
+                            }
+                            else{
+                                s=plname+"||"+data[i][j][2]+"|"+data[i][j][3]+"|"+data[i][j][1]+"|"+data[i][j][0]+"|"+data[i][j][4]
+                                play.push(s)
+                            $("#tab").append("<tr><td>"+data[i][j][0]+"</td><td></td></tr>")
+                            }
+
+                        }
+                    }
+                    // document.getElementById("view-modal").innerHTML="<p> "+data[0][0] +"</p>";
+              //do nothing
+            });           
+        }
+
+       
+       function viewFollowers(param){
+            // document.getElementById("view-follower").style.display="block";
+            document.getElementById("create-playlist").style.display="none";
+        document.getElementById("add-modal").style.display="none";
+        document.getElementById("view-modal").style.display="none";
+        document.getElementById("view-fav").style.display="none";
+        document.getElementById("view-follower").style.display="block";
+        document.getElementById("view-following").style.display="none";
+        document.getElementById("my-music").style.display="none";
+            $.getJSON('/viewFollowers/'+param,
+                function(data){
+                    // alert(data)
+                     for(i=0;i<data.length;i++){
+                        msg="<div class='imgFrame'><a href='/userProfileById2/"+data[i][0]+"'><img src='https://www.alzforum.org/sites/default/files/member-default.jpg' alt='' class='img'><div class='imgExplanation'>"+data[i][1]+"</div></a></div>"
+                        if(i==0){
+                            $("#show-area1").html(msg)
+                        }
+                        else{
+                            $("#show-area1").append(msg)
+                        }
+                    }
+            });
+        }
+
+        function viewFollowing(param){
+            //here param is session['userid']
+            // alert("ello there")
+            // document.getElementById("view-following").style.display="block";
+            document.getElementById("create-playlist").style.display="none";
+        document.getElementById("add-modal").style.display="none";
+        document.getElementById("view-modal").style.display="none";
+        document.getElementById("view-fav").style.display="none";
+        document.getElementById("view-follower").style.display="none";
+        document.getElementById("view-following").style.display="block";
+        document.getElementById("my-music").style.display="none";
+            $.getJSON('/viewFollowing/'+param,
+                function(data){
+                    // alert(data)
+                     for(i=0;i<data.length;i++){
+                     	// alert(data[i][0])
+                        msg="<div class='imgFrame'><a name='test_followers' href='/userProfileById/"+data[i][0]+"'><img src='https://www.alzforum.org/sites/default/files/member-default.jpg' alt='' class='img'><div class='imgExplanation'>"+data[i][1]+"</div></a></div>"
+                        if(i==0){
+                            $("#show-area").html(msg)
+                        }
+                        else{
+                            $("#show-area").append(msg)
+                        }
+                    }
+            });
+        }
+
+
+        function uploadedSongPlay(param){
+            // alert(param)
+            a=param.split("|")
+            name=a[1]
+            link=a[0]
+            var audio=document.getElementById("audio-player")
+            audio.src=link
+            $('#song-name-preview').text(name);
+            audio.play()
+        }
+
+        function viewUploadedSongs(param){
+            // alert("here!!!")
+        document.getElementById("create-playlist").style.display="none";
+        document.getElementById("add-modal").style.display="none";
+        document.getElementById("view-modal").style.display="none";
+        document.getElementById("view-fav").style.display="none";
+        document.getElementById("view-follower").style.display="none";
+        document.getElementById("view-following").style.display="none";
+        document.getElementById("my-music").style.display="block";
+        $.getJSON('/viewUploadedSong/'+param,
+        function(data){
+            for(i=0;i<data.length;i++){
+                $("#music").append("<tr><td style='cursor:pointer;' id='"+data[i][2]+"|"+data[i][1]+"' onclick='uploadedSongPlay(this.id)'>"+data[i][1]+"</td></tr>")
+            }
+        });
+        }
+</script>
+<!-- <script>
+ 
+</script> -->
+
+  <div class="container" style="height:110%;">
+    <br>
+      {%  if 'userid' in session%}
+       <b><h3> {% print 'Welcome ',session['uname'],'!' %}</h3></b>
+        {% endif %}
+    <br>
+    <div class="row">
+    <div class="col-lg-3" style=" height: 100%; float:left;">
+        <br>
+        {% set l=session['userid'] %}
+        <a style="background-color: #e72c30; width:200px" class="btn btn-danger btn-lg waves-effect waves-light"  onclick="viewUploadedSongs({{ l }})" >My Music</a><br><br>
+        <a id="test" style="background-color: #e72c30; width:200px" class="btn btn-danger btn-lg waves-effect waves-light" onclick="viewPlaylist({{ l }})">View Playlists</a><br><br>
+        <a style="background-color: #e72c30; width:200px" class="btn btn-danger btn-lg waves-effect waves-light"  onclick="viewCreatePlaylist()">Create Playlists</a><br><br>
+        <a style="background-color: #e72c30; width:200px" class="btn btn-danger btn-lg waves-effect waves-light"  onclick="viewUploadSong({{ l }})" >Upload Songs</a><br><br>
+        <a style="background-color: #e72c30; width:200px" class="btn btn-danger btn-lg waves-effect waves-light"  onclick="viewFav({{ l }})" >Favourites</a><br><br>
+        <a style="background-color: #e72c30; width:200px" class="btn btn-danger btn-lg waves-effect waves-light"  onclick="viewFollowing({{ l }})" >Following</a><br><br>
+        <a style="background-color: #e72c30; width:200px" class="btn btn-danger btn-lg waves-effect waves-light"  onclick="viewFollowers({{ l }})" >Followers</a>
+
+
+
+    </div>
+    <div class="col-lg-9" style=" height: 100%; float:right;">
+        <!-- Add Song -->
+        <div id="add-modal" style="display: none; height:110%" >
+                <h2>Upload Song</h2>
+                <form action="/background_process" method="POST" id="form" enctype="multipart/form-data">
+                    <input placeholder="Song Name" class="form-control" type="text" id="sname" name="sname"><br>
+                     <select onchange="func();"placeholder="Songs Category" id="category" name="category">
+                        <option value=""  selected>Select Category</option>
+                  </select>
+                  <br>
+                  <br>
+                  <select placeholder="genre" id="genre" name="genre">
+                  </select>
+                  <br>
+                  <br>
+                    <input class="form-control" placeholder="Artist" type="text" id="artist" name="artist">
+                    <input class="form-control" placeholder="Album" type="text" id="album" name="album">
+                    <input class="form-control" type="text" placeholder="Year of release"  id="year" name="year"> 
+                    <input placeholder="Select File" type="file" id="browse" name="browse" accept="*.mp3" >
+                    <br>
+                    <select placeholder="Public?" id="isPublic" name="isPublic">
+                        <option value="Public" selected>Public</option>
+                        <option value="Private"> Private</option>
+                    </select>
+                     <input type="submit" class="btn btn-danger btn-lg waves-effect waves-light" value="Upload" id="test"> 
+                </form>
+        </div>
+        <!-- Add Song Ends -->
+
+        <!-- Make Playlist -->
+        <div id="create-playlist" style="display:none; height:150%">
+            <form action="/createPlaylistDashboard" id="playlist-create-form" method="POST">
+            <input type="text" class="form-control" name="pname" placeholder="Enter name of playlist" required>
+            <br>
+            <table class="table table-hover">
+                <thead><tr></strong><td>Name</td>
+                    <td>Artist</td>
+                    <td>Album</td>
+                    <td>Genre</td></strong></tr></thead>
+                {% for i in listOfAllSongs %}
+                <tr><td>{% print i.sname %}</td>
+                    <td>{% print i.artist %}</td>
+                    <td>{% print i.album %}</td>
+                    <td>{% for j in genreList %}
+                        {% if i.genre == j.scat_id %}
+                        {% print j.scat_name %}
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td><button type="button" id="{{ i.sid }}" class="btn btn-primary" onclick="addToList(this.id)">+</button></td>
+                    <td><button type="button" id="1{{ i.sid }}" class="btn btn-danger" onclick="removeFromList(this.id)" disabled>-</button></td></tr>
+                {% endfor %}
+            </table>
+            <input type="text" id="list" name="list" style="display: none;"></label>
+            <script>
+                playlist=[]
+            function addToList(param){
+                // alert(param)
+                document.getElementById("1"+param).disabled=false
+                // document.getElementById("d").disabled=false
+
+                 playlist.push(param)
+            }
+            function removeFromList(param){
+                var index = playlist.indexOf(param.substr(1));
+                if (index !== -1) playlist.splice(index, 1);
+                // playlist.remove(param.substr(1))
+            }
+            function printList(){
+                console.log(playlist)
+                document.getElementById("list").value =  ""+playlist
+            }
+        </script>
+            <button type="button" style="display:none;" id="hidden-button" value="add" onclick="printList()">add</button>
+            <input id="playlist-button-create" type="submit" value="Create" class="btn btn-danger btn-lg waves-effect waves-light">
+        </form>
+        </div>
+        <!-- Make Playlist Ends -->
+        <!-- View Playlist starts -->
+        <div id="view-modal" style="display:none; height:110%">
+            <h3>Playlists</h3>
+            <table id ="tab" class="table table-hover">
+                <tr><td></td></tr>
+            </table>
+        </div>
+        <!-- View Playlist ends -->
+        <!-- View Fav -->
+        <div id="view-fav" style="display: none; height: 110%">
+            <table id="fav" class="table table-hover">
+                <tr><td></td></tr>
+            </table>
+        </div>
+        <!-- View Fav Ends -->
+
+        <!-- View Following -->
+        <div id="view-following" style="display:none; height:110%;">
+            <div class="imgContainer" id="show-area">
+            <!--append here -->
+            </div>
+        </div>
+        <!-- View Following ends -->
+
+        <!-- View Followers -->
+        <div id="view-follower" style="display:none; height:110%;">
+                <div class="imgContainer" id="show-area1">
+                <!--append here -->
+                </div>
+            </div>
+        <!-- View Followers Ends -->
+
+        <!-- View Uploaded Songs -->
+        <div id="my-music" style="display:none; height: 110%;">
+            <!-- Append here -->
+            <table id="music" class="table table-hover">
+                <tr><td></td></tr>
+            </table>
+        </div>
+        <!-- View Uploaded Songs Ends -->
+        </div>
+    </div>

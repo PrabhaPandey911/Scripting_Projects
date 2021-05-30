@@ -1,0 +1,174 @@
+
+<link href="../static/search.css" rel="stylesheet" type="text/css">
+<link href="../static/songsall.css" rel="stylesheet" type="text/css">
+
+<script src="../static/songplay.js"></script>
+
+<div class="container">
+
+    <!-- Songs Search start -->
+{% if var1|length>0 %}
+<div class="container">
+    <div col="col-md-6">
+        <h3 style="float:left">Songs</h3>
+    </div>
+{% if var1|length> 4 %}
+    <div col="col-md-6">
+        <h5 style="float:right;top: 43px;position: relative;"><a id='view_all' href="{{ url_for('songsall',searched=search_var) }}">View All</a></h5>
+    </div>
+</div>
+<div class="imgContainer">
+    {% for x in range(4) %}
+        <div class="imgFrame">
+            <img name="songs" data-sid={{songs_sid}} data-id={{var1[x].sid}} data-link={{var1[x].path}} data-image={{var1[x].thumbnail}} data-name={{var1[x].sname}} src={{var1[x].thumbnail}} alt="" class="img">
+            <div class="imgExplanation">{{var1[x].sname}}</div>
+        </div>
+
+    
+    {% endfor %}
+</div>
+{% else %}
+    </div>
+<div class="imgContainer">
+
+    {% for x in var1 %}
+        <div class="imgFrame">
+            <img name="songs" data-sid={{songs_sid}} data-id={{x.sid}} data-link={{x.path}} data-image={{x.thumbnail}} data-name={{x.sname}} src={{x.thumbnail}} alt="" class="img">
+            <div class="imgExplanation">{{x.sname}}</div>
+        </div>
+
+    {% endfor %}
+    
+    </div>
+    {% endif %}
+
+<div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+
+{% endif %}
+<!-- song search end -->
+
+    <!-- Artist Search start -->
+ {% if var2|length>0 %}
+ <div class="container">
+     <div col="col-md-6">
+         <h3 style="float:left">Artist</h3>
+     </div>
+ {% if var2|length> 4 %}
+     <div col="col-md-6">
+         <h5 style="float:right;top: 43px;position: relative;"><a href="{{ url_for('artistAll',searched=search_var) }}">View All</a></h5>
+     </div>
+ </div>
+ <div class="imgContainer">
+     {% for x in range(4) %}
+         <div class="imgFrame">
+             <a href="{{ url_for('songArtist',searched=var2[x]) }}"><img src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png" alt="" class="img">
+             <div class="imgExplanation">{{var2[x]}}</div>
+            </a>
+         </div>
+ 
+     
+     {% endfor %}
+ </div>
+ {% else %}
+     </div>
+<div class="imgContainer">
+
+     {% for x in var2 %}
+         <div class="imgFrame">
+             <a href="{{ url_for('songArtist',searched=x) }}"><img src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png" alt="" class="img">
+             <div class="imgExplanation">{{x}}</div></a>a>
+         </div>
+ 
+     {% endfor %}
+    </div>
+     {% endif %}
+
+ <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+ 
+ {% endif %}
+ <!-- Artist search end -->
+
+   <!-- Album Search start -->
+   {% if var3|length>0 %}
+   <div class="container">
+       <div col="col-md-6">
+           <h3 style="float:left">Album</h3>
+       </div>
+   {% if var3|length> 4 %}
+       <div col="col-md-6">
+           <h5 style="float:right;top: 43px;position: relative;"><a href="{{ url_for('albumAll',searched=search_var) }}">View All</a></h5>
+       </div>
+   </div>
+   <div class="imgContainer">
+       {% for x in range(4) %}
+           <div class="imgFrame">
+               <a href="{{ url_for('songAlbum',searched=var3[x]) }}"><img src="https://4.imimg.com/data4/YX/NL/MY-18974029/cd-album-cover-designing-250x250.jpg" alt="" class="img">
+               <div class="imgExplanation">{{var3[x]}}</div>
+              </a>
+           </div>
+   
+       
+       {% endfor %}
+        </div>
+   {% else %}
+       </div>
+<div class="imgContainer">
+
+       {% for x in var3 %}
+           <div class="imgFrame">
+               <a href="{{ url_for('songAlbum',searched=x) }}"><img src="https://4.imimg.com/data4/YX/NL/MY-18974029/cd-album-cover-designing-250x250.jpg" alt="" class="img">
+               <div class="imgExplanation">{{x}}</div></a>
+           </div>
+   
+       {% endfor %}
+    </div>
+       {% endif %}
+
+   <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+   
+   {% endif %}
+   <!-- Album search end -->
+
+
+    <!-- User Search start -->
+    {% if var4|length>0 %}
+    <div class="container">
+        <div col="col-md-6">
+            <h3 style="float:left">Users</h3>
+        </div>
+    {% if var4|length> 4 %}
+        <div col="col-md-6">
+            <h5 style="float:right;top: 43px;position: relative;"><a href="{{ url_for('userAll',searched=search_var) }}">View All</a></h5>
+        </div>
+    </div>
+    <div class="imgContainer">
+        {% for x in range(4) %}
+            <div class="imgFrame">
+                <a href="{{ url_for('userProfile',searched=var4[x]) }}"><img src="https://www.alzforum.org/sites/default/files/member-default.jpg" alt="" class="img">
+                <div class="imgExplanation">{{var4[x].uname}}</div>
+               </a>
+            </div>
+    
+        
+        {% endfor %}
+         </div>
+    {% else %}
+        </div>
+ <div class="imgContainer">
+ 
+        {% for x in var4 %}
+            <div class="imgFrame">
+                <a href="{{ url_for('userProfile',searched=x) }}"><img src="https://www.alzforum.org/sites/default/files/member-default.jpg" alt="" class="img">
+                <div class="imgExplanation">{{x.uname}}</div></a>
+            </div>
+    
+        {% endfor %}
+     </div>
+        {% endif %}
+ 
+    <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+    
+    {% endif %}
+    <!-- User search end -->
+
+</div>

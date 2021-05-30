@@ -1,0 +1,63 @@
+
+
+<style>
+
+@media (min-width: 992px) {
+  .container-scroll > .row {
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
+  .container-scroll > .row > .col-md-3 {
+    display: inline-block;
+    float: none;
+  }
+}
+
+.container-scroll > .row {
+  margin-top: 24px;
+}
+.container-scroll > .row > .col-md-3 {
+  font-weight: bold;
+  text-align: center;
+}
+</style>
+
+<script src="../static/songplay.js"></script>
+
+
+<div class='container'>
+    {% for r in result1 %}
+      {% if r in result3.keys() %}
+        <div class="container">
+          <div col="col-md-6">
+            <h3 style="float:left">{{r}}</h3>
+          </div>
+          {% if result3[r]|length> 4 %}
+          <div col="col-md-6">
+            <h5 style="float:right;top: 43px;position: relative;"><a id='view_all' href="{{ url_for('discover_genre',g_id=result2[result3[r][0]].genre) }}">View All</a></h5>
+          </div>
+        </div>
+        <div class="imgContainer">
+          {% for x in range(4) %}
+            <div class="imgFrame">
+              <img name="songs" data-sid={{result4[r]}} data-id={{result2[result3[r][x]].sid}} data-link={{result2[result3[r][x]].path}} data-image={{result2[result3[r][x]].thumbnail}} data-name={{result2[result3[r][x]].sname}} src={{result2[result3[r][x]].thumbnail}} alt="" class="img">
+                 <div class="imgExplanation">{{result2[result3[r][x]].sname}}</div>
+              </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        </div>
+        <div class="imgContainer">
+          {% for x in result3[r] %}
+            <div class="imgFrame">
+              <img name="songs" data-sid={{result4[r]}} data-id={{result2[x].sid}} data-link={{result2[x].path}} data-image={{result2[x].thumbnail}} data-name={{result2[x].sname}} src={{result2[x].thumbnail}} alt="" class="img">
+               <div class="imgExplanation">{{result2[x].sname}}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+        {% endif %}
+    {% endfor %}
+  </div>
+   

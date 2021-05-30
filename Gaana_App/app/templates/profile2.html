@@ -1,0 +1,137 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="../static/profile.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script type="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+		
+	function follow(id){
+		// alert("follow called");
+		$.getJSON('/follow/'+id,
+			function(data){					
+				$("#followbtn").html('Unfollow');
+			});
+	}
+	function unfollow(id){
+		// alert("unfollow called");
+		$.getJSON('/unfollow/'+id,
+			function(data){
+				$("#followbtn").html('Follow');
+			});
+
+	}
+	$(function(){
+		$(".temp").on('click',function(){
+			// alert("temp");
+			console.log(this.id);
+			x=(this.id).split(",");
+			uid=x[0];
+			call=x[1];
+			console.log(call);
+			if(call == "true" && tempflag==0)
+			{
+				// alert("if called");
+				follow(uid);
+				call="false";
+				tempflag=1;
+			}
+			else 
+			{
+				// alert("else called");
+				unfollow(uid);
+				call="true";
+				tempflag=0;
+
+			}
+			
+			
+			return false;
+		});
+	});
+	
+	function runfollow(id){
+		// alert("runfollow called");
+		$.getJSON('/unfollow/'+id,
+			function(data){					
+				$("#unfollowbtn").html('Follow');
+			});
+	}
+	function rfollow(id){
+		// alert("rfollow called");
+		$.getJSON('/follow/'+id,
+			function(data){
+				$("#unfollowbtn").html('Unfollow');
+			});
+
+	}
+	$(function(){
+
+	
+		$(".rubbish").on('click',function(){
+			// alert("rubbish");
+			console.log(this.id);
+			x=(this.id).split(",");
+			uid=x[0];
+			ucall=x[1];
+			console.log(ucall);
+
+			if(ucall == "false" && rubbishflag==0){
+				// alert(" rubbish if called");
+				runfollow(uid);
+				ucall="true";
+				rubbishflag=1;
+			}
+			else
+			{
+				// alert("rubbish else called");
+				rfollow(uid);
+				ucall = "false";
+				rubbishflag=0;
+			}
+							
+			return false;
+		});
+	});
+</script>
+<div style="padding-top: 50px;">
+<div style="box-shadow: 0 4px 8px 0 rgba(0,0,0, 0.2); max-width: 300px; text-align: center; margin: auto; ">
+	<script type="text/javascript">
+		tempflag=0;
+		rubbishflag=0;
+	</script>
+	<img src="https://s3.amazonaws.com/s4ds_mkc/mkc-core/s4ds/images/avatars/defaultAvatar.png" alt="user profile photo" style="padding-top: 10px;">
+	<br>
+	<br>
+	{% for i in var1 %}
+	<div><h1 style="font-size: 20px;color: #e72c30"> {{ i['uname'] }}  </h1></div>
+
+	<div><h2 style="color: grey; font-size: 18px;"> {{ i['email'] }} </h2></div>
+	
+	
+	
+		{% if status == "false" %}
+		
+		{% set str1=i['uid']|string+","+status %}
+		
+		<div style="text-align: center; margin-left: 45%; margin-right: 100%;"><a href='#' id={{ str1 }} class="rubbish"><button type="button" class="btn btn-danger" id="unfollowbtn">Unfollow</button></a></div>
+		{% else %}
+		{% set str=i['uid']|string+","+status %}
+		<div style="text-align: center; margin-left: 45; margin-right: 100%; "><a href='#' id={{ str }} class="temp"><button type="button" class="btn btn-danger" id="followbtn">Follow</button></a></div>		
+		{% endif %}
+	
+
+	
+
+	<br> 
+	<br>
+	<a href="#"><i class="fa fa-dribbble"></i></a> 
+ 	<a href="#"><i class="fa fa-twitter"></i></a> 
+  	<a href="#"><i class="fa fa-linkedin"></i></a> 
+ 	<a href="#"><i class="fa fa-facebook"></i></a> 
+	{% endfor %}
+
+	
+
+</div>
+</div>
